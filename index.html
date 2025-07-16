@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quy đổi điểm VSAT - C00 CTU</title>
+  <style>
+    body { font-family: Arial; padding: 40px; max-width: 600px; margin: auto; }
+    input, button { font-size: 16px; padding: 5px; margin: 5px 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>Quy đổi điểm VSAT (thang 150) theo phương pháp CTU</h1>
+  <label>Điểm Văn:</label><input id="van" type="number" min="0" max="150"><br>
+  <label>Điểm Sử:</label><input id="su" type="number" min="0" max="150"><br>
+  <label>Điểm Địa:</label><input id="dia" type="number" min="0" max="150"><br>
+  <button onclick="quyDoi()">Tính điểm C00</button>
+  <h2 id="kq">Kết quả: </h2>
+
+  <script>
+    const bangPhanVi = [
+      {a: 137, b: 150, c: 9.0, d: 10},
+      {a: 127.5, b: 137, c: 8.8, d: 9.0},
+      {a: 121.0, b: 127.5, c: 8.6, d: 8.8},
+      {a: 112.5, b: 121.0, c: 8.4, d: 8.6},
+      {a: 106.0, b: 112.5, c: 8.2, d: 8.4},
+      {a: 99.5, b: 106.0, c: 8.0, d: 8.2},
+      {a: 94.0, b: 99.5, c: 7.8, d: 8.0},
+      {a: 88.0, b: 94.0, c: 7.6, d: 7.8},
+      {a: 81.5, b: 88.0, c: 7.4, d: 7.6},
+      {a: 74.0, b: 81.5, c: 7.0, d: 7.4},
+      {a: 64.0, b: 74.0, c: 6.4, d: 7.0}
+    ];
+
+    function noiSuy(x) {
+      for (let i = 0; i < bangPhanVi.length; i++) {
+        const {a, b, c, d} = bangPhanVi[i];
+        if (x > a && x <= b) {
+          return c + (d - c) * ((x - a) / (b - a));
+        }
+      }
+      return 0; // ngoài phạm vi
+    }
+
+    function quyDoi() {
+      let van = parseFloat(document.getElementById("van").value);
+      let su = parseFloat(document.getElementById("su").value);
+      let dia = parseFloat(document.getElementById("dia").value);
+
+      let qVan = noiSuy(van);
+      let qSu = noiSuy(su);
+      let qDia = noiSuy(dia);
+
+      let tong = qVan + qSu + qDia;
+      document.getElementById("kq").innerHTML = `Kết quả C00: ${tong.toFixed(2)} / 30`;
+    }
+  </script>
+</body>
+</html>
